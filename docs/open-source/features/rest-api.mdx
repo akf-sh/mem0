@@ -79,7 +79,8 @@ docker pull mem0/mem0-api-server
       </Tab>
       <Tab title="Build locally">
 ```bash
-docker build -t mem0-api-server .
+# From the repository root:
+docker build -f server/Dockerfile -t mem0-api-server .
 ```
       </Tab>
     </Tabs>
@@ -92,6 +93,12 @@ docker build -t mem0-api-server .
     ```
 
     3. Visit `http://localhost:8000`.
+
+    **Deploy on Railway**
+
+    1. Set `RAILWAY_DOCKERFILE_PATH=server/Dockerfile` on the API service, or configure the service to use that Dockerfile path.
+    2. Add your Postgres variables. The server reads `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_COLLECTION_NAME`. It also honors `PGSSLMODE=require` or `POSTGRES_SSLMODE=require` for managed Postgres providers that require TLS.
+    3. Set `JWT_SECRET` to a generated secret before deploying. If you deploy only the API container without the dashboard, set `ADMIN_API_KEY` to a long random value or create the first admin through `POST /auth/register`.
 
     **Run directly (no Docker)**
 

@@ -3,6 +3,8 @@
 OUTPUT ?= text
 API_URL ?= http://localhost:8888
 DASHBOARD_URL ?= http://localhost:3000
+SERVER_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+REPO_ROOT := $(abspath $(SERVER_DIR)/..)
 
 up:
 	@for port in 3000 8888; do \
@@ -56,7 +58,7 @@ prune-logs:
 	@docker compose exec -T -e REQUEST_LOG_RETENTION_DAYS="$(REQUEST_LOG_RETENTION_DAYS)" -e PYTHONPATH=/app mem0 python scripts/prune_request_logs.py
 
 build:
-	docker build -t mem0-api-server .
+	docker build -f $(SERVER_DIR)/Dockerfile -t mem0-api-server $(REPO_ROOT)
 
 run_local:
 	docker run -p 8000:8000 -v $(shell pwd):/app mem0-api-server --env-file .env
