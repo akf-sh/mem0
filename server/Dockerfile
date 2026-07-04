@@ -12,6 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY server .
 
+RUN mkdir -p /app/history
+
 EXPOSE 8000
 
 ENV PYTHONUNBUFFERED=1
